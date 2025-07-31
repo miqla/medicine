@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { toast, ToastContainer } from "react-toastify";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../configs/firebase";
 import UploadWidget from "../components/UploadWidget";
@@ -29,8 +28,11 @@ export default function EditProductPage() {
       });
       navigate("/");
     } catch (error) {
-      const notify = () => toast(`${error.code} - ${error.message}`);
-      notify();
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.code} - ${error.message}`,
+      });
     }
   }
 
@@ -58,13 +60,6 @@ export default function EditProductPage() {
 
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        pauseOnFocusLoss={false}
-        draggable
-        pauseOnHover={false}
-      />
       <div className="card card-dash bg-base-200 mx-auto w-96">
         <div className="card-body">
           <h2 className="card-title mx-auto">Edit Data</h2>
