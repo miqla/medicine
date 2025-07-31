@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../configs/firebase";
 import UploadWidget from "../components/UploadWidget";
+import Swal from "sweetalert2";
 
 export default function EditProductPage() {
   const [name, setName] = useState("");
@@ -21,8 +22,11 @@ export default function EditProductPage() {
         price: price,
         imageUrl: imageUrl,
       });
-      const notify = () => toast(`data added succsessfully`);
-      notify();
+      Swal.fire({
+        title: "Success!",
+        text: "Data has been edited",
+        icon: "success",
+      });
       navigate("/");
     } catch (error) {
       const notify = () => toast(`${error.code} - ${error.message}`);
