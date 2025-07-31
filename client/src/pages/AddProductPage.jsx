@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { toast, ToastContainer } from "react-toastify";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../configs/firebase";
 import UploadWidget from "../components/UploadWidget";
+import Swal from "sweetalert2";
 
 export default function AddProductPage() {
   const [name, setName] = useState("");
@@ -19,24 +19,24 @@ export default function AddProductPage() {
         price: price,
         imageUrl: imageUrl,
       });
-      const notify = () => toast(`data added succsessfully`);
-      notify();
+
+      Swal.fire({
+        title: "Success!",
+        text: "Data added succsessfully",
+        icon: "success",
+      });
       navigate("/");
     } catch (error) {
-      const notify = () => toast(`${error.code} - ${error.message}`);
-      notify();
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.code} - ${error.message}`,
+      });
     }
   }
 
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        pauseOnFocusLoss={false}
-        draggable
-        pauseOnHover={false}
-      />
       <div className="card card-dash bg-base-200 mx-auto w-96">
         <div className="card-body">
           <h2 className="card-title mx-auto">Add Data</h2>
