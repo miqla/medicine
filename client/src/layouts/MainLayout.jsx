@@ -3,6 +3,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../configs/firebase";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 export default function MainLayout() {
   const navigate = useNavigate();
@@ -17,6 +18,12 @@ export default function MainLayout() {
   async function handleLogOut() {
     try {
       signOut(auth);
+      Swal.fire({
+        icon: "success",
+        title: "You have been logged out",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       navigate("/auth");
     } catch (error) {
       console.log(error);
