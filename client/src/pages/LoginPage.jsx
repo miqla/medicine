@@ -8,6 +8,7 @@ import { auth, googleProvider } from "../configs/firebase";
 import { useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
+import Swal from "sweetalert2";
 
 export default function LoginPage() {
   const [email, setEmail] = useState();
@@ -39,6 +40,12 @@ export default function LoginPage() {
         password
       );
       console.log(userLoggedIn);
+      Swal.fire({
+        icon: "success",
+        title: "You have been logged in",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       navigate("/");
     } catch (error) {
       const notify = () => toast(`${error.code} - ${error.message}`);
