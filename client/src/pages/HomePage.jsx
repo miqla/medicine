@@ -47,12 +47,15 @@ export default function HomePage() {
       />
       <main className="mx-auto max-w-6xl w-9/10 flex flex-col">
         <h1 className="font-bold text-3xl text-center mb-3">Product List</h1>
-        <button
-          onClick={() => navigate("/products/add")}
-          className="btn self-end mb-2 w-max"
-        >
-          Add Data
-        </button>
+        <div>
+          <button>Clear filter</button>
+          <button
+            onClick={() => navigate("/products/add")}
+            className="btn self-end mb-2 w-max"
+          >
+            Add Data
+          </button>
+        </div>
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 ">
           <table className="table">
             {/* head */}
