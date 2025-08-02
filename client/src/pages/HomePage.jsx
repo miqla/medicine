@@ -47,11 +47,11 @@ export default function HomePage() {
       />
       <main className="mx-auto max-w-6xl w-9/10 flex flex-col">
         <h1 className="font-bold text-3xl text-center mb-3">Product List</h1>
-        <div>
-          <button>Clear filter</button>
+        <div className="mb-2">
+          <button className="btn">Clear filter</button>
           <button
             onClick={() => navigate("/products/add")}
-            className="btn self-end mb-2 w-max"
+            className="btn self-end w-max"
           >
             Add Data
           </button>
