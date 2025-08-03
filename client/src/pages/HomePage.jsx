@@ -48,7 +48,10 @@ export default function HomePage() {
       <main className="mx-auto max-w-6xl w-9/10 flex flex-col">
         <h1 className="font-bold text-3xl text-center mb-3">Product List</h1>
         <div className="mb-2 flex justify-between">
-          <button className="btn">Clear filter</button>
+          <div>
+            <input type="text" className="border" />
+            <button className="btn">Clear filter</button>
+          </div>
           <button
             onClick={() => navigate("/products/add")}
             className="btn self-end w-max"
