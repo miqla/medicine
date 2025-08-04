@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../configs/firebase";
+import { auth, db } from "../configs/firebase";
 import { useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const navigate = useNavigate();
 
   async function handleRegister(e) {
@@ -19,7 +21,12 @@ export default function RegisterPage() {
         email,
         password
       );
-      console.log(userRegistered);
+      //   console.log(userRegistered.user.uid);
+      await setDoc(doc(db, "users", userRegistered.user.uid), {
+        name: name,
+        email: email,
+        role: "customer",
+      });
       navigate("/");
     } catch (error) {
       const errorCode = error.code;
@@ -48,6 +55,16 @@ export default function RegisterPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="border rounded-sm w-full p-1"
+            />
+          </div>
+          <div className="w-4/6 mb-4">
+            <label htmlFor="name">Name</label>
+            <br />
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="border rounded-sm w-full p-1"
             />
           </div>

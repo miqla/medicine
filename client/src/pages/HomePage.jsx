@@ -49,7 +49,7 @@ export default function HomePage() {
         <h1 className="font-bold text-3xl text-center mb-3">Product List</h1>
         <div className="mb-2 flex justify-between">
           <div>
-            <input type="text" className="border" />
+            <input type="text" className="border p-px mr-2" />
             <button className="btn">Clear filter</button>
           </div>
           <button

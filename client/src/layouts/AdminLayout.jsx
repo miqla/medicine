@@ -13,7 +13,7 @@ export default function AdminLayout() {
   function setPageOnLoad() {
     if (currentURL == basicURL + "/auth") {
       setPage("login");
-      console.log(basicURL + "/auth");
+      //   console.log(basicURL + "/auth");
     } else if (currentURL == basicURL + "/auth/register") {
       setPage("register");
     }
