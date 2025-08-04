@@ -22,6 +22,7 @@ export default function RegisterPage() {
         password
       );
       //   console.log(userRegistered.user.uid);
+      //   tambahkan data user kedalam firestore
       await setDoc(doc(db, "users", userRegistered.user.uid), {
         name: name,
         email: email,

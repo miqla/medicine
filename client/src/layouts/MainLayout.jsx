@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 
 export default function MainLayout() {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, role, name } = useContext(AuthContext);
 
   useEffect(() => {
     if (!user) {

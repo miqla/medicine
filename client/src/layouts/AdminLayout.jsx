@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 export default function AdminLayout() {
   const navigate = useNavigate();
   const [page, setPage] = useState("login");
-  const { user } = useContext(AuthContext);
+  const { user, role, name } = useContext(AuthContext);
   const basicURL = "http://localhost:5173";
 
   const currentURL = window.location.href;
