@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import { signOut } from "firebase/auth";
 import { auth } from "../configs/firebase";
 import { useContext, useEffect } from "react";
@@ -7,13 +7,42 @@ import Swal from "sweetalert2";
 
 export default function MainLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, role, name } = useContext(AuthContext);
 
   useEffect(() => {
+    console.log(user, role, name);
     if (!user) {
       navigate("/auth");
     }
+    if (user) {
+      if (role === "admin") {
+        navigate("/", {
+          state: location,
+          replace: true,
+        });
+      } else if (role === "customer") {
+        navigate("/public", {
+          state: location,
+          replace: true,
+        });
+      }
+    }
   }, []);
+
+  function goHome() {
+    if (role === "customer") {
+      navigate("/public", {
+        state: location,
+        replace: true,
+      });
+    } else if (role === "admin") {
+      navigate("/", {
+        state: location,
+        replace: true,
+      });
+    }
+  }
 
   async function handleLogOut() {
     try {
@@ -80,14 +109,14 @@ export default function MainLayout() {
                 </li>
               </ul>
             </div>
-            <a onClick={() => navigate("/")} className="btn btn-ghost text-xl">
+            <a onClick={() => goHome()} className="btn btn-ghost text-xl">
               Health & Medicine
             </a>
           </div>
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1">
               <li>
-                <a onClick={() => navigate("/")}>Products</a>
+                <a onClick={() => goHome()}>Products</a>
               </li>
               <li>
                 <details>

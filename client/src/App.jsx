@@ -9,6 +9,7 @@ import AuthContextProvider from "./context/AuthContext";
 import AddProductPage from "./pages/AddProductPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import EditProductPage from "./pages/EditProductPage";
+import HomePublicPage from "./pages/public/HomePublicPage";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,16 @@ const router = createBrowserRouter([
       {
         path: "products/edit/:id",
         element: <EditProductPage />,
+      },
+    ],
+  },
+  {
+    path: "/public",
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomePublicPage />,
       },
     ],
   },
