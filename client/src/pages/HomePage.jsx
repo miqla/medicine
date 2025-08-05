@@ -49,8 +49,12 @@ export default function HomePage() {
       <main className="mx-auto max-w-6xl w-9/10 flex flex-col">
         <h1 className="font-bold text-3xl text-center mb-3">Product List</h1>
         <div className="mb-2 flex justify-between">
-          <div>
-            <input type="text" className="border p-px mr-2" />
+          <div className="flex gap-2">
+            <select defaultValue="All" className="select">
+              <option value="">All</option>
+              <option value="tablet">Tablet</option>
+              <option value="syrup">Syrup</option>
+            </select>
             <button className="btn">Clear filter</button>
           </div>
           <button
