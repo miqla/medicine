@@ -3,6 +3,7 @@ import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../configs/firebase";
 import { useNavigate } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
+import { rupiahFormat } from "../utils/rupiahFormatter";
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
@@ -84,7 +85,7 @@ export default function HomePage() {
                       alt={product.name}
                     />
                   </td>
-                  <td>{product.price}</td>
+                  <td>{rupiahFormat(product.price)}</td>
                   <td className="w-[180px]">
                     <button
                       onClick={() => navigate(`/products/edit/${product.id}`)}
