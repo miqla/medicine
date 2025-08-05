@@ -55,6 +55,11 @@ export default function HomePage() {
               <option value="tablet">Tablet</option>
               <option value="syrup">Syrup</option>
             </select>
+            <select defaultValue="Sort by" className="select">
+              <option hidden>Sort by</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-des">Price: High to Low</option>
+            </select>
             <button className="btn">Clear filter</button>
           </div>
           <button
