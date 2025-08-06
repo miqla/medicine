@@ -7,6 +7,8 @@ import { rupiahFormat } from "../utils/rupiahFormatter";
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
+  const [filter, setFilter] = useState("");
+  const [sort, setSort] = useState("");
   const navigate = useNavigate();
 
   async function getProducts() {
@@ -50,15 +52,25 @@ export default function HomePage() {
         <h1 className="font-bold text-3xl text-center mb-3">Product List</h1>
         <div className="mb-2 flex justify-between">
           <div className="flex gap-2">
-            <select defaultValue="All" className="select">
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              defaultValue="All"
+              className="select"
+            >
               <option value="">All</option>
               <option value="tablet">Tablet</option>
               <option value="syrup">Syrup</option>
             </select>
-            <select defaultValue="Sort by" className="select">
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              defaultValue="Sort by"
+              className="select"
+            >
               <option hidden>Sort by</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-des">Price: High to Low</option>
+              <option value="asc">Price: Low to High</option>
+              <option value="desc">Price: High to Low</option>
             </select>
             <button className="btn">Clear filter</button>
           </div>
