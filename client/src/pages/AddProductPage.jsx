@@ -9,6 +9,7 @@ export default function AddProductPage() {
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [price, setPrice] = useState(0);
+  const [category, setCategory] = useState("");
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -18,6 +19,7 @@ export default function AddProductPage() {
         name: name,
         price: price,
         imageUrl: imageUrl,
+        category: category,
       });
 
       Swal.fire({
@@ -61,6 +63,15 @@ export default function AddProductPage() {
               disabled
             />
             <UploadWidget setImage={setImageUrl} />
+            <label htmlFor="category">Product category</label>
+            <input
+              className="border rounded-sm p-1"
+              type="text"
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            />
             <label htmlFor="price">Price</label>
             <input
               className="border rounded-sm p-1"
