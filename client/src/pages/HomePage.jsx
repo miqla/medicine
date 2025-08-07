@@ -24,7 +24,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   //   ---- pagination start-----
   const [totalPage, setTotalPage] = useState(0);
-  const [currentPage, setCurrentPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(1);
 
   function handlePrevPage() {
     if (currentPage > 1) {
