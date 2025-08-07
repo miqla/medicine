@@ -9,6 +9,7 @@ export default function EditProductPage() {
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [price, setPrice] = useState(0);
+  const [category, setCategory] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -20,6 +21,7 @@ export default function EditProductPage() {
         name: name,
         price: price,
         imageUrl: imageUrl,
+        category: category,
       });
       Swal.fire({
         title: "Success!",
@@ -46,6 +48,7 @@ export default function EditProductPage() {
         setName(docSnap.data().name);
         setImageUrl(docSnap.data().imageUrl);
         setPrice(docSnap.data().price);
+        setCategory(docSnap.data().category);
       } else {
         console.log("document not found!");
       }
@@ -84,6 +87,15 @@ export default function EditProductPage() {
               disabled
             />
             <UploadWidget setImage={setImageUrl} />
+            <label htmlFor="name">Product category</label>
+            <input
+              className="border rounded-sm p-1"
+              type="text"
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            />
             <label htmlFor="price">Price</label>
             <input
               className="border rounded-sm p-1"
