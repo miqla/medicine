@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+} from "firebase/firestore";
 import { db } from "../configs/firebase";
 import { useNavigate } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
@@ -23,10 +31,6 @@ export default function HomePage() {
     setProducts(result);
   }
 
-  useEffect(() => {
-    getProducts();
-  }, []);
-
   async function deleteProduct(id) {
     try {
       await deleteDoc(doc(db, "products", id));
@@ -38,6 +42,49 @@ export default function HomePage() {
       notify();
     }
   }
+
+  async function fetchFilter() {
+    try {
+      let q = query(collection(db, "products"));
+      // Akan digunakan ketika state filter berisikan value
+      if (filter) {
+        q = query(q, where("category", "==", filter));
+      }
+
+      // Akan digunakan ketika state sort berisikan value
+      if (sort == "price-asc") {
+        q = query(q, orderBy("price", "asc"));
+      } else if (sort == "price-desc") {
+        q = query(q, orderBy("price", "desc"));
+      }
+
+      //   jalankan setProduct berdasarkan query
+      const querySnapshot = await getDocs(q);
+      //   kalau pakai map jangan lupa tambahin .docs, kalau forEach gaperlu .docs
+      const result = querySnapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data(), // =>  object { name, imageUrl, price }
+        };
+      });
+      setProducts(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function clearFilter() {
+    setFilter("");
+    setSort("");
+  }
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  useEffect(() => {
+    fetchFilter();
+  }, [sort, filter]);
 
   return (
     <>
@@ -69,10 +116,12 @@ export default function HomePage() {
               className="select"
             >
               <option hidden>Sort by</option>
-              <option value="asc">Price: Low to High</option>
-              <option value="desc">Price: High to Low</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
             </select>
-            <button className="btn">Clear filter</button>
+            <button onClick={clearFilter} className="btn">
+              Clear filter
+            </button>
           </div>
           <button
             onClick={() => navigate("/products/add")}
@@ -90,11 +139,13 @@ export default function HomePage() {
                 <th>Name</th>
                 <th>Image</th>
                 <th>Price</th>
+                <th>Category</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {/* looping rows */}
+              {/* akan berjalan ketika products ada isinya */}
               {products?.map((product, index) => (
                 <tr key={product.id}>
                   <th>{index + 1}</th>
@@ -107,6 +158,7 @@ export default function HomePage() {
                     />
                   </td>
                   <td>{rupiahFormat(product.price)}</td>
+                  <td>{product.category}</td>
                   <td className="w-[180px]">
                     <button
                       onClick={() => navigate(`/products/edit/${product.id}`)}
