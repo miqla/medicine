@@ -7,17 +7,36 @@ import {
   query,
   where,
   orderBy,
+  limit,
+  startAfter,
 } from "firebase/firestore";
 import { db } from "../configs/firebase";
 import { useNavigate } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
 import { rupiahFormat } from "../utils/rupiahFormatter";
 
+const PAGE_LIMIT = 2; //SNAKE CASE, read only
+
 export default function HomePage() {
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("");
   const navigate = useNavigate();
+  //   ---- pagination start-----
+  const [totalPage, setTotalPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(3);
+
+  function handlePrevPage() {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }
+  function handleNextPage() {
+    if (currentPage < totalPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
+  // ------pagination end--------
 
   async function getProducts() {
     const querySnapshot = await getDocs(collection(db, "products"));
@@ -58,6 +77,24 @@ export default function HomePage() {
         q = query(q, orderBy("price", "desc"));
       }
 
+      //   ---------- pagination start ------------
+      const totalItems = (await getDocs(q)).size;
+      const currentTotalPage = Math.ceil(totalItems / PAGE_LIMIT);
+      setTotalPage(currentTotalPage); // 5 / 2 = pembulatanKeAtas(2.5) => Math.ceil()
+      if (currentPage > currentTotalPage) {
+        setCurrentPage(1);
+      }
+      q = query(q, limit(PAGE_LIMIT)); //current page = 1, limit = 2
+      if (currentPage > 1) {
+        // get total item showed to get last visible item
+        q = query(q, limit((currentPage - 1) * PAGE_LIMIT));
+        const documentSnapshots = await getDocs(q);
+        const lastVisible = documentSnapshots.docs.at(-1); // equal to: documentSnapshots.docs[documentSnapshots.docs.length-1];
+        console.log("last", lastVisible.data()); // pakai .data()
+        q = query(q, limit(PAGE_LIMIT), startAfter(lastVisible));
+      }
+      // ------- pagination end -------------
+
       //   jalankan setProduct berdasarkan query
       const querySnapshot = await getDocs(q);
       //   kalau pakai map jangan lupa tambahin .docs, kalau forEach gaperlu .docs
@@ -84,7 +121,7 @@ export default function HomePage() {
 
   useEffect(() => {
     fetchFilter();
-  }, [sort, filter]);
+  }, [sort, filter, currentPage]);
 
   return (
     <>
@@ -177,6 +214,17 @@ export default function HomePage() {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="join flex gap-2 my-2 justify-end">
+          <button onClick={handlePrevPage} className="join-item btn">
+            ◁ Prev
+          </button>
+          <button className="join-item">
+            Page {currentPage} of {totalPage}
+          </button>
+          <button onClick={handleNextPage} className="join-item btn">
+            Next ▷
+          </button>
         </div>
       </main>
     </>
