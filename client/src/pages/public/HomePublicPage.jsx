@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { db } from "../../configs/firebase";
 import { rupiahFormat } from "../../utils/rupiahFormatter";
 import { GoTrash } from "react-icons/go";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function HomePublicPage() {
   const [products, setProducts] = useState([]);
@@ -52,6 +53,8 @@ export default function HomePublicPage() {
         imageUrl: prod.imageUrl,
         category: prod.category,
       });
+      const notify = () => toast(`product has been added to cart`);
+      notify();
       getCartProducts();
     } catch (error) {
       console.log(error);
@@ -61,14 +64,25 @@ export default function HomePublicPage() {
   async function deleteProduct(id) {
     try {
       await deleteDoc(doc(db, "carts", id));
+      const notify = () => toast(`product has been deleted from cart`);
+      notify();
       getCartProducts();
     } catch (error) {
       console.log(error);
+      const notify = () => toast(`${error.code} - ${error.message}`);
+      notify();
     }
   }
 
   return (
     <>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+      />
       {/* modal box */}
       {/* Open the modal using document.getElementById('ID').showModal() method */}
       <dialog id="my_modal_2" className="modal">
@@ -120,6 +134,7 @@ export default function HomePublicPage() {
             ></label>
             <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
               {/* Sidebar content here */}
+              <h1 className="font-bold text-3xl text-center mb-3">Cart</h1>
               {cartProducts?.map((product) => (
                 <li key={product.id}>
                   <div className="card flex flex-row justify-between bg-base-100 shadow-sm mb-2">
